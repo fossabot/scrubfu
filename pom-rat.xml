@@ -55,6 +55,7 @@
 						<exclude>.vscode/**</exclude>
 						<exclude>.vs/**</exclude>
             			<exclude>.mvn/**</exclude>
+            			<exclude>.scannerwork/**</exclude>
             						
 						<!-- specific files/file extensions to ignore -->
 						<exclude>**/*.rptdesign</exclude>

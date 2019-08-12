@@ -24,7 +24,6 @@ jobs:
           -Dsonar.projectName=$SONAR_PROJECT_KEY \
           -Dsonar.organization=$SONAR_ORG \
           -Dsonar.login=$SONAR_AUTH_TOKEN \
-          -Dsonar.branch.name=$CIRCLE_BRANCH \
           -Dsonar.projectBaseDir=$CI_PROJECT_DIR \
           -Dsonar.sourceEncoding=UTF-8 \
           -Dsonar.test.inclusions=tests/**/* \

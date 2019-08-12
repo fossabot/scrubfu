@@ -12,6 +12,7 @@ artifacts/
 *DS_Store
 *.sln.ide
 /.sonarqube
+/.scannerwork
 /src/.sonarqube/conf
 /runsonarqube.bat
 /runcmd.bat
