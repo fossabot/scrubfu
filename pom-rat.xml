@@ -1,0 +1,107 @@
+<!--
+
+    *************************************************
+    Copyright (c) 2019, Grindrod Bank Limited
+    License MIT: https://opensource.org/licenses/MIT
+    **************************************************
+
+-->
+<!-- 
+	http://stackoverflow.com/questions/3448648/how-do-i-run-a-specific-goal-with-a-particular-configuration-in-a-maven-plugin-w 
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<!--
+		http://code.mycila.com/license-maven-plugin/
+		http://code.mycila.com/license-maven-plugin/reports/3.0/plugin-info.html
+		
+		http://maven.apache.org/enforcer/enforcer-rules/index.html
+		
+		========== TO ADD ===========
+		http://www.mojohaus.org/taglist-maven-plugin/
+	-->
+	
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>grindrodbank</groupId>
+    <artifactId>grindrodbank-release-audit-tool</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>grindrodbank-release-audit-tool</name>
+	
+    <build>
+        <finalName>grindrodbank-release-audit-tool</finalName>
+        <plugins>	
+		
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>3.0</version>
+				
+				<configuration>
+					<header>doc/license/copyright_header.txt</header>
+					<basedir>${env.WORKSPACE}</basedir>
+					<properties>
+						<project.inceptionYear>2019</project.inceptionYear>
+						<owner>Grindrod Bank Limited</owner>
+						<email>melissap@grindrodbank.co.za</email>
+					</properties>
+					<useDefaultExcludes>true</useDefaultExcludes>
+					<excludes>						
+						<!-- folders to ignore -->
+						<exclude>doc/**</exclude>
+						<exclude>**/bin/**</exclude>
+						<exclude>**/obj/**</exclude>
+						<exclude>.vscode/**</exclude>
+						<exclude>.vs/**</exclude>
+            			<exclude>.mvn/**</exclude>
+            			<exclude>.scannerwork/**</exclude>
+            						
+						<!-- specific files/file extensions to ignore -->
+						<exclude>**/*.rptdesign</exclude>
+						<exclude>**/*.jmx</exclude>
+						<exclude>**/*.lock</exclude>	
+						<exclude>**/*.tgz</exclude>
+						<exclude>**/*.csv</exclude>
+						<exclude>**/*.jpeg</exclude>
+						<exclude>**/*.dockerignore</exclude>
+						<exclude>**/*.factorypath</exclude>	
+						<exclude>**/*.conf</exclude>	
+						<exclude>**/*.attack</exclude>		
+						<exclude>**/LICENSE</exclude>						
+						<exclude>**/README</exclude>
+						<exclude>**/mvnw</exclude>
+						<exclude>**/mvnw.cmd</exclude>
+						<exclude>**/*.csproj</exclude>
+						<exclude>**/*.sln</exclude>
+						<exclude>**/*.cache</exclude>
+						<exclude>**/*.targets</exclude>
+						<exclude>**/*.props</exclude>
+						<exclude>**/*.pdb</exclude>
+						<exclude>**/*.txt</exclude>
+						<exclude>**/*.CopyComplete</exclude>
+						<exclude>**/*.log</exclude>
+						<exclude>**/*.nupkg</exclude>
+						<exclude>**/*.nuspec</exclude>
+						<exclude>**/*.alias</exclude>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/*.md</exclude>
+					</excludes>						
+					<mapping>						
+            <Dockerfile>SCRIPT_STYLE</Dockerfile>
+            <Jenkinsfile>DOUBLESLASH_STYLE</Jenkinsfile>			
+            <dbm>XML_STYLE</dbm>
+					</mapping>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
+    </build>
+</project>

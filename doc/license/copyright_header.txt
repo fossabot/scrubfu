@@ -1,0 +1,4 @@
+*************************************************
+Copyright (c) ${project.inceptionYear}, ${owner}
+License MIT: https://opensource.org/licenses/MIT
+**************************************************

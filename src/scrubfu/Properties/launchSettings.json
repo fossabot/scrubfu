@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Scrubfu": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

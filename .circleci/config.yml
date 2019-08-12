@@ -1,0 +1,144 @@
+#
+# *************************************************
+# Copyright (c) 2019, Grindrod Bank Limited
+# License MIT: https://opensource.org/licenses/MIT
+# **************************************************
+#
+
+version: 2.1
+jobs:
+  static-analysis:
+    docker:
+      - image: newtmitch/sonar-scanner:alpine
+    working_directory: ~/build
+    steps:
+      # Update, upgrade, then install git and openssh for a clean checkout
+      - run: apk update
+      - run: apk upgrade
+      - run: apk --no-cache add --update git openssh
+      - checkout
+      - run: |
+         sonar-scanner \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+          -Dsonar.projectName=$SONAR_PROJECT_KEY \
+          -Dsonar.organization=$SONAR_ORG \
+          -Dsonar.login=$SONAR_AUTH_TOKEN \
+          -Dsonar.projectBaseDir=$CI_PROJECT_DIR \
+          -Dsonar.sourceEncoding=UTF-8 \
+          -Dsonar.test.inclusions=tests/**/* \
+          -Dsonar.sources=.
+  test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2-alpine
+    working_directory: ~/build
+    
+    steps:
+      # Update, upgrade, then install  openssh and git for a clean checkout
+      - run: apk update
+      - run: apk upgrade
+      - run: apk --no-cache add --update git openssh
+      - checkout
+      - run: dotnet restore
+      - run: dotnet build
+      - run: dotnet test --no-build 
+
+  license-headers:
+    docker:
+      - image: maven:3.5.3-jdk-8-alpine
+    working_directory: ~/build
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: "-Xmx3200m "
+    steps:
+      # Update, upgrade, then install openssh and git for a clean checkout
+      - run: apk update
+      - run: apk upgrade
+      - run: apk --no-cache add --update openssh git
+      - checkout
+      - restore_cache:
+          keys:
+            - scrubfu-build-lic-2-{{ checksum "pom-rat.xml" }}            
+      - run: mvn dependency:go-offline -f pom-rat.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: scrubfu-build-lic-2-{{ checksum "pom-rat.xml" }} -f pom-rat.xml
+      - run: mvn clean -f pom-rat.xml license:check
+  docker-build-push:
+    docker:
+      - image: docker:18.09.3
+    working_directory: ~/build
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      # build and push Docker image to dockerhub.
+      - run: |
+          TAG=0.0.1
+          docker build -t grindrodbank/scrubfu:$TAG .     
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push grindrodbank/scrubfu:$TAG
+          # Tag and push latest
+          docker tag grindrodbank/scrubfu:$TAG grindrodbank/scrubfu:latest
+          docker push grindrodbank/scrubfu:latest
+  fossa-scan:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2-alpine
+    working_directory: ~/build
+    steps:
+      # Update, upgrade, then install su, curl, bash, git and openssh
+      - run: apk update
+      - run: apk upgrade
+      - run: set -ex && apk --no-cache add sudo
+      - run: apk --no-cache add --update curl bash git openssh
+      # Install Fossa
+      - run: |
+          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | tac | tac | sudo bash
+      # Install Maven
+      - checkout
+      - run: FOSSA_API_KEY=$FOSSA_API_KEY fossa init
+      - run: FOSSA_API_KEY=$FOSSA_API_KEY fossa analyze
+      # Note: The 'fossa test' command must be run after the analyze command has been run, as it is dependent on the previous scan.
+      - run: FOSSA_API_KEY=$FOSSA_API_KEY fossa test
+  vulnerability-test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2-alpine
+    working_directory: ~/build
+    steps:
+      # Update, upgrade, then install sudo, nodejs, npm, git and openssh
+      - run: apk update
+      - run: apk upgrade
+      - run: set -ex && apk --no-cache add sudo
+      - run: apk --no-cache add --update nodejs npm git openssh
+      - checkout 
+      - run: dotnet restore
+      - run: sudo npm_config_unsafe_perm=true npm install -g npm@latest
+      - run: sudo npm_config_unsafe_perm=true npm install -g snyk@latest
+      - run: sudo snyk auth $SNYK_TOKEN
+      - run: sudo snyk monitor --file=scrubfu.sln || true
+workflows:
+  version: 2
+  build_test_and_push:
+    jobs:
+      - test
+      - static-analysis
+      - vulnerability-test
+      - license-headers
+      - fossa-scan:
+          filters:
+            tags:
+              only: /^v*.*.*/
+            branches:
+              only: master      
+      - docker-build-push:
+          requires:
+          - test
+          - static-analysis
+          - license-headers
+          filters:
+            tags:
+              only: /^v*.*.*/
+            branches:
+              only: master
+
