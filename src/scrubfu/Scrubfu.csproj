@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>scrubfu</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackageId>Scrubfu</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Darin Morris, Paul van Coller</Authors>
+    <Company>Grindrod Bank Limited</Company>
+    <Description>Scrubfu is a data scrubbing &amp; obfuscation utility for PostgreSQL databases.</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/GrindrodBank/scrubfu</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageProjectUrl>https://github.com/GrindrodBank/scrubfu</PackageProjectUrl>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ReleaseVersion>0.1.0</ReleaseVersion>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.12" />
+    <PackageReference Include="NLog.Config" Version="4.6.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services" />
+    <Folder Include="Tags\" />
+  </ItemGroup>
+</Project>

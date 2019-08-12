@@ -1,0 +1,6 @@
+#Alias's that can be preconfigured and used in scrubfu scripts
+
+#email@domain.zone would become em###@######.##ne 
+EMAIL=MASK:2,#,@,.,-
+
+
