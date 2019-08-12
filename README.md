@@ -1,5 +1,4 @@
 [![CircleCI](https://circleci.com/gh/GrindrodBank/scrubfu.svg?style=svg)](https://circleci.com/gh/GrindrodBank/scrubfu)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu?ref=badge_shield)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=scrubfu&metric=alert_status)](https://sonarcloud.io/dashboard?id=scrubfu)
 
 # Scrubfu
