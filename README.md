@@ -1,4 +1,5 @@
-[![CircleCI](https://circleci.com/gh/GrindrodBank/scrubfu.svg?style=svg)](https://circleci.com/gh/GrindrodBank/scrubfu)
+[![CircleCI](https://circleci.com/gh/GrindrodBank/scrubfu.svg?style=svg)](https://circleci.com/gh/GrindrodBank/scrubfu)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu?ref=badge_shield)
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=scrubfu&metric=alert_status)](https://sonarcloud.io/dashboard?id=scrubfu)
 
 # Scrubfu
@@ -181,3 +182,7 @@ All project documentation is currently available within the /doc folder.
 
 ---
 &copy; Copyright 2019, Grindrod Bank Limited, and distributed under the MIT License.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FGrindrodBank%2Fscrubfu?ref=badge_large)
